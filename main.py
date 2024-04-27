@@ -14,7 +14,7 @@ client: Client = Client(intents=intents)
 async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
         print("Message was empty")
-        return 
+        return None
     
     if is_private:= user_message[0] == '?':
         user_message = user_message[1:]
