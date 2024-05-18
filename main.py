@@ -60,7 +60,7 @@ async def on_message(message: Message) -> None:
 async def check_time():
     now = datetime.datetime.now().strftime("%H:%M")
     print(now, alarm_time)
-    channel = client.get_channel(os.getenv("CHANNEL_ID"))
+    channel = client.get_channel(int(os.getenv("CHANNEL_ID")))
     if now == alarm_time: ##UTC Timezone
         await channel.send("@everyone Let's check in!")
 
