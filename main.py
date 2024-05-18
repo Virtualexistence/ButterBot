@@ -42,7 +42,7 @@ async def on_message(message: Message) -> None:
         channel: str = str(message.channel)
         if "schedule" in user_message:
             if len(user_message.split(' ')) < 3:
-                await message.author.send("The format is in 24Hrs. Syntax: !schedule HH:MM Weekday") 
+                await message.channel.send("The format is in 24Hrs. Syntax: !schedule HH:MM Weekday") 
 
             global alarm_time
             global weekday
@@ -50,7 +50,7 @@ async def on_message(message: Message) -> None:
             weekday = get_weekday_index(user_message.split()[2].lower())
 
             if weekday == -1:
-                await message.author.send("Check Again")    
+                await message.channel.send("Check Again")    
             else:
                 check_time.start()
         if "cancel" in user_message:
