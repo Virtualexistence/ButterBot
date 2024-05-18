@@ -1,9 +1,10 @@
 from typing import Final
-import os
+import os, datetime
 from dotenv import load_dotenv
 from discord import Intents, Client, Message, File, Embed
 from discord.ext import commands, tasks
 from responses import get_response
+
 
 load_dotenv()
 TOKEN: Final[str] = os.getenv("DISCORD_TOEKN")
@@ -11,6 +12,8 @@ TOKEN: Final[str] = os.getenv("DISCORD_TOEKN")
 intents: Intents = Intents.default()
 intents.message_content = True
 client: Client = Client(intents=intents)
+
+parent_channel = None
 
 async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
@@ -39,9 +42,21 @@ async def on_message(message: Message) -> None:
     username: str = str(message.author)
     user_message: str = message.content
     channel: str = str(message.channel)
+    if "time" in user_message:
+        parent_channel = channel
 
     print(f'[{channel}] {username}: {user_message}')
     await send_message(message, user_message)
+
+@tasks.loop(minutes=5)
+async def check_time():
+    now = datetime.datetime.now().strftime("%H:%M")
+    if now == '16:20':
+        channel = parent_channel
+        if channel:
+            await channel.send("@everyone Time to check in!")
+    else:
+        await channel.send(now)
 
 
 def main() -> None:
