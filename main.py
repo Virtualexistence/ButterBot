@@ -41,7 +41,7 @@ async def on_message(message: Message) -> None:
         user_message: str = message.content
         channel: str = str(message.channel)
         if "schedule" in user_message:
-            if len(user_message.split()) < 3:
+            if len(user_message.split(' ')) < 3:
                 await send_message("The format is in 24Hrs. Syntax: !schedule HH:MM Weekday", user_message)   
 
             global alarm_time
