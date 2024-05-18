@@ -39,7 +39,7 @@ def get_weekday_index(in_words):
         "sunday":6
     }
     in_int = weekday_dict.get(in_words)
-    if in_int:
+    if isinstance(in_int, int):
         return in_int
     else:
         return -1
