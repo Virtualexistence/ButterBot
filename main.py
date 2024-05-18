@@ -3,7 +3,7 @@ import os, datetime
 from dotenv import load_dotenv
 from discord import Intents, Client, Message, File, Embed
 from discord.ext import commands, tasks
-from responses import get_response
+from responses import get_response, get_weekday_index
 
 
 load_dotenv()
@@ -41,20 +41,28 @@ async def on_message(message: Message) -> None:
         user_message: str = message.content
         channel: str = str(message.channel)
         if "schedule" in user_message:
-            check_time.start()
-        print(message.channel.id)
+            global alarm_time
+            global weekday
+            alarm_time = user_message.split()[1]
+            weekday = get_weekday_index(user_message.split()[2].lower())
+
+            if weekday == -1:
+                await send_message("Check Again", user_message)    
+            else:
+                check_time.start()
+        if "cancel" in user_message:
+            check_time.stop()
         print(f'[{channel}] {username}: {user_message}')
+
         await send_message(message, user_message)
 
-@tasks.loop(seconds=1)
+@tasks.loop(minutes=1)
 async def check_time():
     now = datetime.datetime.now().strftime("%H:%M")
+    print(now, alarm_time)
     channel = client.get_channel(1234008911284011049)
-    if True:
-        await channel.send(now)
-    else:
-        await channel.send(now)
-
+    if now == alarm_time: ##UTC Timezone
+        await channel.send("@everyone Let's check in!")
 
 def main() -> None:
     client.run(token=TOKEN)

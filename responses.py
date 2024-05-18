@@ -22,7 +22,24 @@ def get_response(user_input: str) -> str:
     elif 'ping' in lowered:
         return "@everyone"
     elif 'schedule' in lowered:
-        dis_time = datetime.now()
-        return str(dis_time.hour) +" "+ str(datetime.weekday(dis_time))
+        return f"Done, scheduled. Recorded on {datetime.now()} UTC Timezone"
+    elif 'cancel' in lowered:
+        return "Gotcha, removed the call"
     else:
         return "I don't understand what you're saying", 0, 0
+    
+def get_weekday_index(in_words):
+    weekday_dict={
+        "monday":0,
+        "tuesday":1,
+        "wednesday":2,
+        'thursday':3,
+        "friday":4,
+        "saturday":5,
+        "sunday":6
+    }
+    in_int = weekday_dict.get(in_words)
+    if in_int:
+        return in_int
+    else:
+        return -1
