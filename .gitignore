@@ -1,3 +1,5 @@
 discord_bot/
 .env
 __pycache__/
+bot_report.log
+.github/
