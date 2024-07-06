@@ -35,7 +35,7 @@ def run(TOKEN):
             day_idx = get_weekday_index(day)
             assert day_idx > -1
             check_time.start(ctx, time, get_weekday_index(day))
-            await ctx.send(f'''Time-zone: IST \nScheduled the call at {time} on {day}. Recorded at {datetime.datetime.now().astimezone(timezone('Asia/Kolkata')}''')
+            await ctx.send(f"Time-zone: IST \nScheduled the call at {time} on {day}. Recorded at {datetime.datetime.now().astimezone(timezone('Asia/Kolkata')}")
         except AssertionError:
             ctx.send("Error in day")
         except:
