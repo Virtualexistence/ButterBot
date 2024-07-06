@@ -5,6 +5,7 @@ from discord import Intents, Client, Message, File, Embed, app_commands
 from discord.ext import commands, tasks
 from responses import get_response, get_weekday_index
 import logging
+from pytz import timezone
 
 def run(TOKEN):
     intents: Intents = Intents.default()
@@ -34,7 +35,7 @@ def run(TOKEN):
             day_idx = get_weekday_index(day)
             assert day_idx > -1
             check_time.start(ctx, time, get_weekday_index(day))
-            await ctx.send(f'''Time-zone: UTC \nScheduled the call at {time} on {day}. Recorded at {datetime.datetime.now()}''')
+            await ctx.send(f'''Time-zone: IST \nScheduled the call at {time} on {day}. Recorded at {datetime.datetime.now().astimezone(timezone('Asia/Kolkata')}''')
         except AssertionError:
             ctx.send("Error in day")
         except:
@@ -66,7 +67,7 @@ def run(TOKEN):
         
     @tasks.loop(minutes=1)
     async def check_time(channel, ping_time, weekday):
-        now = datetime.datetime.now().strftime("%H:%M")
+        now = datetime.datetime.now().astimezone(timezone('Asia/Kolkata').strftime("%H:%M")
         if now == ping_time:
             logging.info(f"Meeting announcement sent to channel at {now}")
             await channel.send("@everyone, Let's Check in!")
