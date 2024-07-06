@@ -67,7 +67,7 @@ def run(TOKEN):
         
     @tasks.loop(minutes=1)
     async def check_time(channel, ping_time, weekday):
-        now = datetime.datetime.now().astimezone(timezone('Asia/Kolkata').strftime("%H:%M")
+        now = datetime.datetime.now().astimezone(timezone('Asia/Kolkata')).strftime("%H:%M")
         if now == ping_time:
             logging.info(f"Meeting announcement sent to channel at {now}")
             await channel.send("@everyone, Let's Check in!")
